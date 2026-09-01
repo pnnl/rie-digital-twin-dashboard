@@ -1,0 +1,5 @@
+__pycache__/
+.DS_Store
+database/rie_twin.db
+logs/
+outputs/

@@ -6,6 +6,8 @@ sourced from ``config.py`` so that extending the dashboard requires changes in
 only one place.
 """
 
+import os
+
 from dash import dcc, html
 import dash_bootstrap_components as dbc
 import dash_mantine_components as dmc
@@ -22,13 +24,20 @@ from config import (
     PRIMARY_SLIDERS, DERIVED_SLIDERS,
     MODEL_CONFIG, MODEL_ORDER,
     DATABASE_DISPLAY_COLUMNS,
-    DATABASE_DROP_DUPLICATE_COLS
+    DATABASE_DROP_DUPLICATE_COLS, DB_PATH
 )
 
 
 # ─── DATA LOADING ───────────────────────────────────────────────────────────────
 # Load and de-duplicate the parameters table once at import time so the AG Grid
-# is populated on first render.
+# is populated on first render. If the database doesn't exist, create it and the parameters table.
+
+os.makedirs('database', exist_ok=True)
+
+# If database doesn't exist, create it and the parameters table
+if not os.path.exists(DB_PATH):
+    db.create_database(DB_PATH)
+
 
 database_df = db.load_data('parameters')
 database_df = database_df[DATABASE_DISPLAY_COLUMNS].drop_duplicates(

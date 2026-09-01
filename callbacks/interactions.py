@@ -88,6 +88,12 @@ client = mph.start()
 # Create logging and output directories if they don't exist
 os.makedirs('logs', exist_ok=True)
 os.makedirs('outputs', exist_ok=True)
+os.makedirs('database', exist_ok=True)
+
+# If database doesn't exist, create it and the parameters table
+if not os.path.exists(DB_PATH):
+    db.create_database(DB_PATH)
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # BACKGROUND PROCESSING ENGINE
